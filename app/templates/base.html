@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+{% include 'include.html' %}
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid container_nav">
+      <a class="navbar-brand" href="{{url_for('public.home')}}">
+        <h3 class="urban_logo">City Manager</h3>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+          class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        {% if not current_user.is_authenticated %}
+        <ul class="navbar_menu align-item-center navbar-nav me-auto mt-2">
+          <!-- <a href="#"><li class="nav-item"> <i class="bi bi-search fs-2"></i> Consultar Protocolo </li></a>  -->
+          <!-- <a href="{{ url_for('login.logout') }}"><li class="nav-item"> <i class="bi bi-box-arrow-in-right fs-2 me-2"></i> Sair </li></a> -->
+        </ul>
+        {% endif %}
+
+        {% if current_user.is_authenticated %}
+        <div class="btn-group ms-auto">
+          <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="log_user">
+              <i class="fa fa-user"></i>
+              <a href="#" style="color: black;">{{current_user.nome | capitalize}}</a>
+            </span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" style="color: black;" href="{{ url_for('login.logout') }}" id="logout-btn"
+                onclick="logoutUser()"><i class="fa fa-power-off"></i> Sair</a>
+            </li>
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+
+  {% with messages = get_flashed_messages(category_filter=["sucess"]) %} {% if
+  messages %}
+  <div class="alert alert-success" role="alert">{{ messages[0] }}</div>
+  {% endif %} {% endwith %} {% with messages =
+  get_flashed_messages(category_filter=["error"]) %} {% if messages %}
+  <div class="alert alert-danger" role="alert">{{ messages[0] }}</div>
+  {% endif %} {% endwith %} {% block conteudo %} {% endblock conteudo %}
+</body>
+
+</html>
